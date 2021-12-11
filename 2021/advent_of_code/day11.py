@@ -4,11 +4,10 @@ with open("inputs/day11input.txt", "r") as file:
 
 def flash(i, j, flashes):
     if triggered[i][j]==1:
-        octs[i][j]=0
         return flashes
     octs[i][j] += 1
     if octs[i][j] >= 10:
-        octs[i][j], triggered[i][j] = octs[i][j] % 10, 1
+        octs[i][j], triggered[i][j] = 0, 1
         flashes+=1
         for x in [i-1, i, i+1]:
             for y in [j-1, j, j+1]:
