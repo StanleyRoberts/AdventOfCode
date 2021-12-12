@@ -3,9 +3,9 @@ with open("inputs/day5input.txt", "r") as file:
              for x, y in [line.strip().split(" -> ") for line in file]]
 
 cross = max(val for line in lines for pair in line for val in pair)+1
-plane = [[0] * cross for t in range(cross)]
 
 def inter(diag=False):
+    plane = [[0] * cross for t in range(cross)]
     for line in lines:
         p1, p2 = line[0], line[1]
         miny, maxy = min(p1[1], p2[1]), max(p1[1], p2[1])
