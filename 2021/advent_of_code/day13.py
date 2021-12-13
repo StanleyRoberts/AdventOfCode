@@ -17,4 +17,5 @@ for pair in folds:
 
 plt.scatter(*zip(*dots))
 plt.gca().invert_yaxis()
+plt.gca().set_aspect('equal', adjustable='box')
 plt.show()
