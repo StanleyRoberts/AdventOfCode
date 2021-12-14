@@ -7,10 +7,9 @@ for i in lf:
 
 def rot(list):
     temp = list[0]
-    for i in range(6):
+    for i in range(8):
         list[i]=list[i+1]
-    list[6]=temp+list[7]
-    list[7]=list[8]
+    list[6]+=temp
     list[8]=temp
     return list
 
