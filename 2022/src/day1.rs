@@ -47,7 +47,7 @@ fn part2() {
     for i in 1..max.len() {
         max[0] += max[i];
     }
-    println!("part2: {}", max[0])
+    println!("part2: {}", max[0]);
 }
 
 pub fn main() {

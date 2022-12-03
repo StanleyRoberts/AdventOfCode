@@ -19,14 +19,12 @@ fn part1() {
         let us = get_val(pair[1].trim());
         if opp == us {
             score += 3
-        } else if ((opp+1)%3)+1 == us {
-            score += 0
-        } else {
+        } else if (opp%3)+1 == us {
             score += 6
         }
         score += us;
     }
-    println!("part1: {score}")
+    println!("part1: {score}");
 }
 
 fn part2() {
@@ -39,14 +37,12 @@ fn part2() {
         if pair[1] == "X" {
             score += ((opp+1)%3)+1;
         } else if pair[1] == "Y" {
-            score += 3;
-            score += opp;
+            score += 3 + opp;
         } else {
-            score += 6;
-            score += ((opp)%3)+1;
+            score += 6 + ((opp)%3)+1;
         }
     }
-    println!("part2: {score}")
+    println!("part2: {score}");
 
 }
 
