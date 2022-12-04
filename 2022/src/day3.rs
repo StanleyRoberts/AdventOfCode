@@ -27,7 +27,7 @@ fn part1() {
             total += val;
         }
     }
-    println!("total: {total}");
+    println!("part1: {total}");
 }
 
 fn part2() {
@@ -46,10 +46,10 @@ fn part2() {
         for x in elf1.iter().filter(|k| elf2.contains(k)).filter(|k| elf3.contains(k)) {
             total += to_int(*x);
         }
-
+        
         i += 3;
     }
-    println!("total: {total}")
+    println!("part2: {total}")
 }
 
 pub fn main() {

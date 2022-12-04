@@ -5,15 +5,14 @@ fn part1() {
     let lines = content.lines();
     let mut overlap = 0;
     for line in lines {
-        let pair: Vec<&str> = line.split(&[',', '-'][..]).collect();
-        let elf1: Vec<i32> = vec![pair[0].parse::<i32>().unwrap(), pair[1].parse::<i32>().unwrap()];
-        let elf2: Vec<i32> = vec![pair[2].parse::<i32>().unwrap(), pair[3].parse::<i32>().unwrap()];
-        if elf1[0] <= elf2[0] && elf1[1] >= elf2[1] ||
-           elf2[0] <= elf1[0] && elf2[1] >= elf1[1] {
+        let pair = line.split(&[',', '-']);
+        let list: Vec<i32> = pair.map(|x| x.parse::<i32>().unwrap()).collect();
+        if list[0] <= list[2] && list[1] >= list[3] ||
+           list[2] <= list[0] && list[3] >= list[1] {
             overlap+= 1;
         }
     }
-    println!("overlap: {overlap}");
+    println!("part1: {overlap}");
 }
 
 fn part2() {
@@ -21,15 +20,14 @@ fn part2() {
     let lines = content.lines();
     let mut overlap = 0;
     for line in lines {
-        let pair: Vec<&str> = line.split(&[',', '-'][..]).collect();
-        let elf1: Vec<i32> = vec![pair[0].parse::<i32>().unwrap(), pair[1].parse::<i32>().unwrap()];
-        let elf2: Vec<i32> = vec![pair[2].parse::<i32>().unwrap(), pair[3].parse::<i32>().unwrap()];
-        if elf1[1] >= elf2[0] && elf1[0] <= elf2[1]
-        || elf2[1] >= elf1[0] && elf2[0] <= elf1[1] {
+        let pair = line.split(&[',', '-']);
+        let list: Vec<i32> = pair.map(|x| x.parse::<i32>().unwrap()).collect();
+        if list[1] >= list[2] && list[0] <= list[3]
+        || list[3] >= list[0] && list[2] <= list[1] {
             overlap+= 1;
         }
     }
-    println!("overlap: {overlap}");
+    println!("part2: {overlap}");
 }
 
 pub fn main() {
