@@ -24,10 +24,8 @@ fn part2() {
         let pair: Vec<&str> = line.split(&[',', '-'][..]).collect();
         let elf1: Vec<i32> = vec![pair[0].parse::<i32>().unwrap(), pair[1].parse::<i32>().unwrap()];
         let elf2: Vec<i32> = vec![pair[2].parse::<i32>().unwrap(), pair[3].parse::<i32>().unwrap()];
-        if elf1[0] >= elf2[0] && elf1[0] <= elf2[1]
-        || elf1[1] >= elf2[0] && elf1[1] <= elf2[1]
-        || elf2[0] >= elf1[0] && elf2[0] <= elf1[1]
-        || elf2[1] >= elf1[0] && elf2[1] <= elf1[1] {
+        if elf1[1] >= elf2[0] && elf1[0] <= elf2[1]
+        || elf2[1] >= elf1[0] && elf2[0] <= elf1[1] {
             overlap+= 1;
         }
     }

@@ -43,7 +43,6 @@ fn part2() {
         }
     }
     println!("part2: {score}");
-
 }
 
 pub fn main() {
