@@ -2,7 +2,7 @@ use std::fs;
 use itertools::Itertools;
 use scan_fmt::scan_fmt;
 
-fn parse(input: &str) -> (Vec<Vec<char>>, &str) {
+fn parse(input: &str) -> (Vec<Vec<char>>, Vec<&str>) {
     let (crates, instrs) = match input.split("\n\n").into_iter().collect_tuple() {
         Some(x) => x,
         None => input.split("\n\r\n").into_iter().collect_tuple().unwrap(),
@@ -17,14 +17,14 @@ fn parse(input: &str) -> (Vec<Vec<char>>, &str) {
             }
         }
     }
-    return (stacklist, instrs);
+    return (stacklist, instrs.split('\n').collect::<Vec<&str>>());
 }
 
 fn part1() {
     let content: &str = &fs::read_to_string("data/day5.txt").unwrap();
     let (mut stacklist, instrs) = parse(content);
 
-    for instr in instrs.split('\n').collect::<Vec<&str>>().into_iter() {
+    for instr in instrs {
         let (num, src, dest) = scan_fmt!(instr, "move {d} from {d} to {d}", i32, usize, usize).unwrap();
         for _ in 0..num {
             let val = stacklist[src-1].pop().unwrap();
@@ -40,11 +40,10 @@ fn part2() {
     let content: &str = &fs::read_to_string("data/day5.txt").expect("Error");
     let (mut stacklist, instrs) = parse(content);
 
-    for instr in instrs.split('\n').collect::<Vec<&str>>().into_iter() {
+    for instr in instrs {
         let (num, src, dest) = scan_fmt!(instr, "move {d} from {d} to {d}", i32, usize, usize).unwrap();
-        let mut val: Vec<char> = (0..num).map(|_| stacklist[src-1].pop().unwrap()).collect();
-        val.reverse();
-        for v in val{
+        let val: Vec<char> = (0..num).map(|_| stacklist[src-1].pop().unwrap()).collect();
+        for v in val.into_iter().rev() {
             stacklist[dest-1].push(v);
         }
     }
