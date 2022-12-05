@@ -1,7 +1,7 @@
 use std::fs;
 
 fn part1() {
-    let content = fs::read_to_string("data/day1.txt").expect("Error");
+    let content = fs::read_to_string("data/day1.txt").unwrap();
     let branches = content.lines();
     let mut var = 0;
     let mut max = 0;
@@ -30,7 +30,7 @@ fn set_vec(vec: &mut Vec<i32>, var: i32) {
 }
 
 fn part2() {
-    let content = fs::read_to_string("data/day1.txt").expect("Error");
+    let content = fs::read_to_string("data/day1.txt").unwrap();
     let branches = content.lines();
     let mut var = 0;
     let mut max:Vec<i32> = vec![0, 0, 0];

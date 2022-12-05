@@ -12,7 +12,7 @@ fn to_int(char: char) -> i32 {
 }
 
 fn part1() {
-    let content = fs::read_to_string("data/day3.txt").expect("Error");
+    let content = fs::read_to_string("data/day3.txt").unwrap();
     let lines = content.lines();
     let mut total = 0;
     for line in lines {
@@ -31,7 +31,7 @@ fn part1() {
 }
 
 fn part2() {
-    let content = fs::read_to_string("data/day3.txt").expect("Error");
+    let content = fs::read_to_string("data/day3.txt").unwrap();
     let lines: Vec<&str> = content.split('\n').collect();
     let mut i = 0;
     let mut total = 0;

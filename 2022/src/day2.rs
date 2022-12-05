@@ -10,7 +10,7 @@ fn get_val(num: &str) -> i32 {
 }
 
 fn part1() {
-    let content = fs::read_to_string("data/day2.txt").expect("Error");
+    let content = fs::read_to_string("data/day2.txt").unwrap();
     let lines = content.lines();
     let mut score = 0;
     for line in lines{
@@ -28,7 +28,7 @@ fn part1() {
 }
 
 fn part2() {
-    let content = fs::read_to_string("data/day2.txt").expect("Error");
+    let content = fs::read_to_string("data/day2.txt").unwrap();
     let lines = content.lines();
     let mut score = 0;
     for line in lines{

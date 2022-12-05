@@ -1,7 +1,7 @@
 use std::fs;
 
 fn part1() {
-    let content = fs::read_to_string("data/day4.txt").expect("Error");
+    let content = fs::read_to_string("data/day4.txt").unwrap();
     let lines = content.lines();
     let mut overlap = 0;
     for line in lines {
@@ -16,7 +16,7 @@ fn part1() {
 }
 
 fn part2() {
-    let content = fs::read_to_string("data/day4.txt").expect("Error");
+    let content = fs::read_to_string("data/day4.txt").unwrap();
     let lines = content.lines();
     let mut overlap = 0;
     for line in lines {
