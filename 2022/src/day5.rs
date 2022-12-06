@@ -37,7 +37,7 @@ fn part1() {
 }
 
 fn part2() {
-    let content: &str = &fs::read_to_string("data/day5.txt").expect("Error");
+    let content: &str = &fs::read_to_string("data/day5.txt").unwrap();
     let (mut stacklist, instrs) = parse(content);
 
     for instr in instrs {
