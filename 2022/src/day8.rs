@@ -1,7 +1,7 @@
 use std::fs;
 use std::cmp::max;
 
-fn part1() { // implicit matrix rotation (via reversed indexing) for solution in O(nm) time and O(n) space
+fn part1() { // implicit matrix rotation (via reversed indexing) for solution in O(nm) time and space
     let content = fs::read_to_string("data/day8.txt").unwrap();
     let lines = content.lines();
     let mut matrix: Vec<Vec<i32>> = Vec::new();

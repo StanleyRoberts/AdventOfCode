@@ -59,8 +59,8 @@ fn part2() {
                          _ => (),
                     }
                 } else {
-                    let (x, y) = snake[k];
-                    let (i, j) = snake[k-1];
+                    let (x, y) = snake[k]; //syntactic sugar to match part1
+                    let (i, j) = snake[k-1]; //as above
                     let col = x+cmp!(i, x)==i && y+cmp!(j, y)==j;
                     snake[k] = (if col {x} else {x+cmp!(i, x)}, if col {y} else {y+cmp!(j, y)});
                 }
@@ -68,11 +68,11 @@ fn part2() {
             visited.insert(snake[9]);
         }
     }
-    println!("part1: {}", visited.len());
+    println!("part2: {}", visited.len());
 }
 
 pub fn main() {
-    println!("\nDay ");
+    println!("\nDay 9");
     part1();
     part2();
 }
