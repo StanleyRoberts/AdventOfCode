@@ -31,7 +31,6 @@ impl Monkey {
             return item+num
         }
     }
-
 }
 
 struct MonkeyList {
@@ -62,8 +61,8 @@ impl MonkeyList {
     }
 }
 
-fn parse_input() -> MonkeyList {
-    let content = fs::read_to_string("data/day11.txt").unwrap();
+fn parse_input(file: &str) -> MonkeyList {
+    let content = fs::read_to_string(file).unwrap();
     let monkeys = match content.split("\n\n").collect::<Vec<&str>>().len() {
         1 => content.split("\n\r\n"),
         _ => content.split("\n\n"),
@@ -84,7 +83,7 @@ fn parse_input() -> MonkeyList {
 }
 
 fn part1() {
-    let mut mlist = parse_input();
+    let mut mlist = parse_input("data/day11.txt");
     for _ in 0..20 {
         mlist.next_round(1);
     }
@@ -94,7 +93,7 @@ fn part1() {
 }
 
 fn part2() {
-    let mut mlist = parse_input();
+    let mut mlist = parse_input("data/day11.txt");
     let mut divisor = 1;
     for monk in &mlist.list {
         divisor *= monk.test;
