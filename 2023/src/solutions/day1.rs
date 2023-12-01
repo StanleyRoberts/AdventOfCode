@@ -3,14 +3,15 @@ fn part1<I: Iterator<Item = String>>(input: I) -> i32 {
         .map(|line| {
             let mut temp = line.chars().filter(char::is_ascii_digit);
             let first = temp.next().unwrap();
-            format!("{}{}", first, temp.last().unwrap_or(first))
+            format!("{first}{}", temp.last().unwrap_or(first))
+                .parse::<i32>()
+                .unwrap()
         })
-        .fold(0, |acc, x| acc + x.parse::<i32>().unwrap())
+        .sum()
 }
 
 fn part2<I: Iterator<Item = String>>(input: I) -> i32 {
     let numbers = [
-        ("zero", "0"),
         ("one", "1"),
         ("two", "2"),
         ("three", "3"),
@@ -21,13 +22,11 @@ fn part2<I: Iterator<Item = String>>(input: I) -> i32 {
         ("eight", "8"),
         ("nine", "9"),
     ];
-    let replaced = input.map(|mut line| {
-        for pair in numbers {
-            line = line.replace(pair.0, &(pair.0.to_owned() + pair.1 + pair.0));
-        }
-        line
-    });
-    part1(replaced)
+    part1(input.map(|line| {
+        numbers.iter().fold(line, |acc, x| {
+            acc.replace(x.0, &(x.0.to_owned() + x.1 + x.0))
+        })
+    }))
 }
 
 pub fn day1() {
