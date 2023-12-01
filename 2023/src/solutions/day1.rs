@@ -8,10 +8,31 @@ fn part1<I: Iterator<Item = String>>(input: I) -> i32 {
         .fold(0, |acc, x| acc + x.parse::<i32>().unwrap())
 }
 
-fn part2() {}
+fn part2<I: Iterator<Item = String>>(input: I) -> i32 {
+    let numbers = [
+        ("zero", "0"),
+        ("one", "1"),
+        ("two", "2"),
+        ("three", "3"),
+        ("four", "4"),
+        ("five", "5"),
+        ("six", "6"),
+        ("seven", "7"),
+        ("eight", "8"),
+        ("nine", "9"),
+    ];
+    let replaced = input.map(|mut line| {
+        for pair in numbers {
+            line = line.replace(pair.0, &(pair.0.to_owned() + pair.1 + pair.0));
+        }
+        line
+    });
+    part1(replaced)
+}
 
 pub fn day1() {
     println!("[Day 1] Part 1: {}", part1(read_input!("day1.txt")));
+    println!("[Day 1] Part 2: {}", part2(read_input!("day1.txt")));
 }
 
 #[cfg(test)]
@@ -30,5 +51,16 @@ treb7uchet"
     }
 
     #[test]
-    fn sample_part2() {}
+    fn sample_part2() {
+        let sample = "two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen"
+            .lines()
+            .map(&str::to_owned);
+        assert_eq!(part2(sample), 281);
+    }
 }
