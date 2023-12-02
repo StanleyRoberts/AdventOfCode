@@ -6,4 +6,5 @@ pub mod solutions;
 
 fn main() {
     solutions::day1();
+    solutions::day2();
 }
