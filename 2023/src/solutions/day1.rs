@@ -63,3 +63,22 @@ zoneight234
         assert_eq!(part2(sample), 281);
     }
 }
+
+#[cfg(feature = "bench")]
+mod bench {
+    use super::*;
+
+    #[bench]
+    fn run_part1(b: &mut test::Bencher) {
+        b.iter(|| {
+            part1(read_input!("day1.txt"));
+        });
+    }
+
+    #[bench]
+    fn run_part2(b: &mut test::Bencher) {
+        b.iter(|| {
+            part2(read_input!("day1.txt"));
+        });
+    }
+}

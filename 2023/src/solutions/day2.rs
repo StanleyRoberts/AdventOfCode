@@ -1,49 +1,44 @@
 fn part1<I: Iterator<Item = String>>(input: I) -> i32 {
     input
-        .map(|line| {
+        .filter_map(|line| {
             let binding = line.replace([';', ',', ':'], "");
             let mut string = binding.split(' ');
-            string.next();
-            let id = string.next().unwrap();
-            let mut invalid = false;
-            while let Some(x) = string.next() {
-                match x.parse::<i32>() {
-                    Ok(13) => {
-                        invalid =
-                            invalid || ![Some("green"), Some("blue")].contains(&string.next());
+            string.clone().skip(2).zip(string.clone().skip(3)).try_fold(
+                string.nth(1).unwrap().parse::<i32>().unwrap(),
+                |acc, x| {
+                    if match x.0.parse::<i32>() {
+                        Ok(13) => !["green", "blue"].contains(&x.1),
+                        Ok(14) => "blue" != x.1,
+                        Ok(15..) => true,
+                        _ => false,
+                    } {
+                        return None;
                     }
-                    Ok(14) => {
-                        invalid = invalid || Some("blue") != string.next();
-                    }
-                    Ok(15..) => invalid = true,
-                    _ => (),
-                }
-            }
-            if invalid {
-                0
-            } else {
-                id.parse::<i32>().unwrap()
-            }
+                    Some(acc)
+                },
+            )
         })
         .sum()
 }
 
 fn part2<I: Iterator<Item = String>>(input: I) -> i32 {
     input.fold(0, |acc, line| {
-        let mut top = [0, 0, 0];
         let binding = line.replace([';', ','], "");
-        let mut slow = "";
-        for x in binding.split(' ') {
-            match x {
-                "red" => top[0] = std::cmp::max(top[0], slow.parse::<i32>().unwrap()),
-                "green" => top[1] = std::cmp::max(top[1], slow.parse::<i32>().unwrap()),
-                "blue" => top[2] = std::cmp::max(top[2], slow.parse::<i32>().unwrap()),
-                _ => (),
-            }
-            slow = x;
-        }
-        let sum = top[0] * top[1] * top[2];
-        acc + sum
+        binding
+            .split(' ')
+            .zip(binding.split(' ').skip(1))
+            .fold([0, 0, 0], |mut acc, x| {
+                match x.1 {
+                    "red" => acc[0] = std::cmp::max(acc[0], x.0.parse::<i32>().unwrap()),
+                    "green" => acc[1] = std::cmp::max(acc[1], x.0.parse::<i32>().unwrap()),
+                    "blue" => acc[2] = std::cmp::max(acc[2], x.0.parse::<i32>().unwrap()),
+                    _ => (),
+                }
+                acc
+            })
+            .iter()
+            .product::<i32>()
+            + acc
     })
 }
 
@@ -78,5 +73,24 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"
             .lines()
             .map(str::to_owned);
         assert_eq!(part2(sample), 2286);
+    }
+}
+
+#[cfg(feature = "bench")]
+mod bench {
+    use super::*;
+
+    #[bench]
+    fn run_part1(b: &mut test::Bencher) {
+        b.iter(|| {
+            part1(read_input!("day2.txt"));
+        });
+    }
+
+    #[bench]
+    fn run_part2(b: &mut test::Bencher) {
+        b.iter(|| {
+            part2(read_input!("day2.txt"));
+        });
     }
 }
