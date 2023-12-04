@@ -13,18 +13,18 @@ fn part1<I: Iterator<Item = String>>(input: I) -> i32 {
         .map(|(row, line)| {
             patt.find_iter(line)
                 .filter_map(|num| {
-                    let mut part = false;
-                    for comp_row in matrix.iter().take(row + 2).skip(row - 1) {
-                        for c in (num.start() - 1)..=num.end() {
-                            if comp_row.chars().nth(c).unwrap().is_ascii_punctuation()
-                                && comp_row.chars().nth(c).unwrap() != '.'
+                    for search_line in matrix.iter().take(row + 2).skip(row - 1) {
+                        for char in (num.start() - 1)..=num.end() {
+                            if search_line
+                                .chars()
+                                .nth(char)
+                                .unwrap()
+                                .is_ascii_punctuation()
+                                && search_line.chars().nth(char).unwrap() != '.'
                             {
-                                part = true;
+                                return Some(num.as_str().parse::<i32>().unwrap());
                             }
                         }
-                    }
-                    if part {
-                        return Some(num.as_str().parse::<i32>().unwrap());
                     }
                     None
                 })
@@ -41,31 +41,22 @@ fn part2<I: Iterator<Item = String>>(input: I) -> i32 {
     let patt = regex::Regex::new(r"\d+").unwrap();
     let mut hm: HashMap<(i32, i32), Vec<i32>> = HashMap::new();
 
-    matrix
-        .iter()
-        .enumerate()
-        .map(|(row, line)| {
-            for num in patt.find_iter(line) {
-                let mut part = false;
-                for (r, comp_row) in matrix.iter().take(row + 2).skip(row - 1).enumerate() {
-                    for c in (num.start() - 1)..=num.end() {
-                        if comp_row.chars().nth(c).unwrap() == '*' {
-                            hm.entry(((row + r) as i32, c as i32))
-                                .or_insert(vec![])
-                                .push(num.as_str().parse().unwrap());
-                        }
+    for (row, line) in matrix.iter().enumerate() {
+        for num in patt.find_iter(line) {
+            for (r, search_row) in matrix.iter().take(row + 2).skip(row - 1).enumerate() {
+                for c in (num.start() - 1)..=num.end() {
+                    if search_row.chars().nth(c).unwrap() == '*' {
+                        hm.entry(((row + r).try_into().unwrap(), c.try_into().unwrap()))
+                            .or_default()
+                            .push(num.as_str().parse().unwrap());
                     }
                 }
             }
-        })
-        .count();
-    let mut count = 0;
-    for ((x, y), vec) in hm {
-        if vec.len() == 2 {
-            count += vec[0] * vec[1];
         }
     }
-    count
+    hm.values()
+        .filter(|vec| vec.len() == 2)
+        .fold(0, |acc, x| acc + (x[0] * x[1]))
 }
 
 pub fn day3() {
@@ -108,7 +99,7 @@ mod tests {
 .664.598.."
             .lines()
             .map(&str::to_owned);
-        assert_eq!(part2(sample), 467835);
+        assert_eq!(part2(sample), 467_835);
     }
 }
 
