@@ -70,15 +70,17 @@ mod bench {
 
     #[bench]
     fn run_part1(b: &mut test::Bencher) {
+        let file: Vec<String> = read_input!("day1.txt").collect();
         b.iter(|| {
-            part1(read_input!("day1.txt"));
+            part1(file.iter().cloned());
         });
     }
 
     #[bench]
     fn run_part2(b: &mut test::Bencher) {
+        let file: Vec<String> = read_input!("day1.txt").collect();
         b.iter(|| {
-            part2(read_input!("day1.txt"));
+            part2(file.iter().cloned());
         });
     }
 }

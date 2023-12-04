@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 fn part1<I: Iterator<Item = String>>(input: I) -> i32 {
     let mut matrix: Vec<String> = input.map(|x| (".".to_owned() + &x + "..")).collect();
-    let dots = String::from_utf8(vec![b'.'; matrix[0].len()]).unwrap();
+    let dots = ".".repeat(matrix[0].len());
     matrix.push(dots.clone());
     matrix.insert(0, dots);
     let patt = regex::Regex::new(r"\d+").unwrap();
@@ -35,7 +35,7 @@ fn part1<I: Iterator<Item = String>>(input: I) -> i32 {
 
 fn part2<I: Iterator<Item = String>>(input: I) -> i32 {
     let mut matrix: Vec<String> = input.map(|x| (".".to_owned() + &x + "..")).collect();
-    let dots = String::from_utf8(vec![b'.'; matrix[0].len()]).unwrap();
+    let dots = ".".repeat(matrix[0].len());
     matrix.push(dots.clone());
     matrix.insert(0, dots);
     let patt = regex::Regex::new(r"\d+").unwrap();
@@ -109,15 +109,17 @@ mod bench {
 
     #[bench]
     fn run_part1(b: &mut test::Bencher) {
+        let file: Vec<String> = read_input!("day3.txt").collect();
         b.iter(|| {
-            part1(read_input!("day3.txt"));
+            part1(file.iter().cloned());
         });
     }
 
     #[bench]
     fn run_part2(b: &mut test::Bencher) {
+        let file: Vec<String> = read_input!("day3.txt").collect();
         b.iter(|| {
-            part2(read_input!("day3.txt"));
+            part2(file.iter().cloned());
         });
     }
 }
