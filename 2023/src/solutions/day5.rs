@@ -4,30 +4,25 @@ fn part1<I: Iterator<Item = String>>(mut input: I) -> i64 {
         .unwrap()
         .split(' ')
         .skip(1)
-        .map(|x| x.parse::<i64>().unwrap())
+        .map(|x| x.parse().unwrap())
         .zip(vec![false; 20])
         .collect::<Vec<(i64, bool)>>();
     input
         .filter(|x| !x.contains(':'))
         .fold(seeds, |acc: Vec<(i64, bool)>, x| {
             if x.is_empty() {
-                acc.iter()
-                    .map(|(x, _)| (*x, false))
-                    .collect::<Vec<(i64, bool)>>()
+                acc.iter().map(|(x, _)| (*x, false)).collect()
             } else {
-                let map = x
-                    .split(' ')
-                    .map(|x| x.parse::<i64>().unwrap())
-                    .collect::<Vec<i64>>();
+                let map: Vec<i64> = x.split(' ').map(|x| x.parse().unwrap()).collect();
                 acc.iter()
                     .map(|(y, set)| {
                         if map[1] <= *y && *y < map[1] + map[2] && !set {
-                            (map[0] + (y - map[1]).abs(), true)
+                            (map[0] + (y - map[1]), true)
                         } else {
                             (*y, *set)
                         }
                     })
-                    .collect::<Vec<(i64, bool)>>()
+                    .collect()
             }
         })
         .iter()
@@ -35,13 +30,12 @@ fn part1<I: Iterator<Item = String>>(mut input: I) -> i64 {
 }
 
 fn part2<I: Iterator<Item = String>>(mut input: I) -> i64 {
-    let mut smallest = 0;
     let start_ranges: Vec<i64> = input
         .next()
         .unwrap()
         .split(' ')
         .skip(1)
-        .map(|x| x.parse::<i64>().unwrap())
+        .map(|x| x.parse().unwrap())
         .collect();
     let mut maps: Vec<Vec<Vec<i64>>> = Vec::new();
     let mut cur: Vec<Vec<i64>> = Vec::new();
@@ -50,26 +44,24 @@ fn part2<I: Iterator<Item = String>>(mut input: I) -> i64 {
             maps.insert(0, cur);
             cur = Vec::new();
         } else {
-            cur.push(item.split(' ').map(|x| x.parse::<i64>().unwrap()).collect());
+            cur.push(item.split(' ').map(|x| x.parse().unwrap()).collect());
         }
     }
     maps.insert(0, cur);
-    let mut cont = true;
-    while cont {
+    let mut smallest = 0;
+    let mut val = 0;
+    while !start_ranges
+        .chunks(2)
+        .any(|range| val > range[0] && val < range[0] + range[1])
+    {
         smallest += 1;
-        let mut val = smallest;
+        val = smallest;
+
         for map in &maps {
-            for line in map {
-                if line[0] <= val && line[0] + line[2] > val {
-                    val = line[1] + (val - line[0]).abs();
-                    break;
-                }
-            }
-        }
-        for range in start_ranges.chunks(2) {
-            if val > range[0] && val < range[0] + range[1] {
-                cont = false;
-            }
+            val = map
+                .iter()
+                .find(|line| line[0] <= val && line[0] + line[2] > val)
+                .map_or(val, |line| line[1] + (val - line[0]));
         }
     }
     smallest
