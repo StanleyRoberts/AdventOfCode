@@ -1,39 +1,29 @@
-use std::cmp::{min, Ordering};
+use std::cmp::Ordering;
 
 #[inline]
 fn get_hand_val(hand: &str, ptwo: bool) -> i32 {
     let mut sort = hand.chars().collect::<Vec<char>>();
+    sort.sort_unstable();
     let jokers = if ptwo {
         i32::try_from(sort.iter().filter(|x| *x == &'J').count()).unwrap()
     } else {
         0
     };
-    sort.sort_unstable();
-    if sort[0] == sort[4] {
-        return 6;
-    } else if sort[0] == sort[3] || sort[1] == sort[4] {
-        return 5 + min(1, jokers);
-    } else if (sort[0] == sort[1] && sort[2] == sort[4])
-        || (sort[3] == sort[4] && sort[0] == sort[2])
-    {
-        return 4 + if jokers == 0 { 0 } else { 2 };
-    } else if sort[0] == sort[2] || sort[1] == sort[3] || sort[2] == sort[4] {
-        return 3 + if jokers == 0 { 0 } else { 2 };
-    }
-    sort.dedup();
-    match sort.len() {
-        5 => jokers,
-        4 => 1 + if jokers == 0 { 0 } else { 2 },
-        3 => {
-            2 + if jokers == 0 {
-                0
-            } else if jokers == 1 {
-                2
-            } else {
-                3
-            }
-        }
-        _ => unreachable!(),
+    let default = if jokers == 0 { 0 } else { 2 };
+    match &sort[..] {
+        [a, _, _, _, e] if a == e => 6,
+        [a, b, _, d, e] if a == d || b == e => 5 + jokers.min(1),
+        [a, b, c, d, e] if (a == b && c == e) || (d == e && a == c) => 4 + default,
+        [a, b, c, d, e] if a == c || b == d || c == e => 3 + default,
+        _ => match {
+            sort.dedup();
+            sort.len()
+        } {
+            5 => jokers,
+            4 => 1 + default,
+            3 => 2 + if jokers == 2 { 3 } else { default },
+            _ => unreachable!(),
+        },
     }
 }
 
