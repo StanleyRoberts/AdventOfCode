@@ -15,4 +15,5 @@ fn main() {
     //solutions::day5(); // takes a sec
     solutions::day6();
     solutions::day7();
+    solutions::day8();
 }
