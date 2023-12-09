@@ -2,21 +2,21 @@ fn part1<I: Iterator<Item = String>>(input: I) -> i32 {
     input
         .filter_map(|line| {
             let binding = line.replace([';', ',', ':'], "");
-            let mut string = binding.split(' ');
-            string.clone().skip(2).zip(string.clone().skip(3)).try_fold(
-                string.nth(1).unwrap().parse::<i32>().unwrap(),
-                |acc, x| {
-                    if match x.0.parse::<i32>() {
-                        Ok(13) => !["green", "blue"].contains(&x.1),
-                        Ok(14) => "blue" != x.1,
+            let string = binding.split(' ').collect::<Vec<&str>>();
+            string
+                .windows(2)
+                .skip(2)
+                .try_fold(string[1].parse::<i32>().unwrap(), |acc, x| {
+                    if match x[0].parse::<i32>() {
+                        Ok(13) => !["green", "blue"].contains(&x[1]),
+                        Ok(14) => "blue" != x[1],
                         Ok(15..) => true,
                         _ => false,
                     } {
                         return None;
                     }
                     Some(acc)
-                },
-            )
+                })
         })
         .sum()
 }
@@ -26,12 +26,13 @@ fn part2<I: Iterator<Item = String>>(input: I) -> i32 {
         let binding = line.replace([';', ','], "");
         binding
             .split(' ')
-            .zip(binding.split(' ').skip(1))
+            .collect::<Vec<&str>>()
+            .windows(2)
             .fold([0, 0, 0], |mut acc, x| {
-                match x.1 {
-                    "red" => acc[0] = std::cmp::max(acc[0], x.0.parse::<i32>().unwrap()),
-                    "green" => acc[1] = std::cmp::max(acc[1], x.0.parse::<i32>().unwrap()),
-                    "blue" => acc[2] = std::cmp::max(acc[2], x.0.parse::<i32>().unwrap()),
+                match x[1] {
+                    "red" => acc[0] = std::cmp::max(acc[0], x[0].parse::<i32>().unwrap()),
+                    "green" => acc[1] = std::cmp::max(acc[1], x[0].parse::<i32>().unwrap()),
+                    "blue" => acc[2] = std::cmp::max(acc[2], x[0].parse::<i32>().unwrap()),
                     _ => (),
                 }
                 acc

@@ -1,35 +1,30 @@
+use std::iter::successors;
+
 macro_rules! get_history {
     ($root:expr) => {{
-        let mut diffs = vec![$root];
-        while diffs[0].iter().any(|&x| x != 0) {
-            diffs.insert(
-                0,
-                diffs[0]
-                    .iter()
-                    .zip(diffs[0].iter().skip(1))
-                    .map(|(a, b)| b - a)
-                    .collect(),
-            );
-        }
-        diffs
+        successors(Some($root.to_vec()), |prev| {
+            if prev.iter().any(|&x| x != 0) {
+                Some(prev.windows(2).map(|w| w[1] - w[0]).collect())
+            } else {
+                None
+            }
+        })
+        .collect::<Vec<Vec<i32>>>()
+        .iter()
     }};
 }
 
 fn part1<I: Iterator<Item = String>>(input: I) -> i32 {
     input
         .map(|x| x.split(' ').map(|x| x.parse::<i32>().unwrap()).collect())
-        .map(|x: Vec<i32>| {
-            get_history!(x)
-                .iter()
-                .fold(0, |acc, x| acc + x[x.len() - 1])
-        })
+        .map(|x: Vec<i32>| get_history!(x).fold(0, |acc, x| acc + x[x.len() - 1]))
         .sum()
 }
 
 fn part2<I: Iterator<Item = String>>(input: I) -> i32 {
     input
         .map(|x| x.split(' ').map(|x| x.parse::<i32>().unwrap()).collect())
-        .map(|x: Vec<i32>| get_history!(x).iter().fold(0, |acc, x| x[0] - acc))
+        .map(|x: Vec<i32>| get_history!(x).rev().fold(0, |acc, x| x[0] - acc))
         .sum()
 }
 
