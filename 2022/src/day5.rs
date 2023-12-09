@@ -8,7 +8,7 @@ fn parse(input: &str) -> (Vec<Vec<char>>, Vec<&str>) {
         None => input.split("\n\r\n").into_iter().collect_tuple().unwrap(),
     };
     let lines = crates.split('\n').collect::<Vec<&str>>().into_iter().rev().collect::<Vec<&str>>();
-    let mut stacklist: Vec<Vec<char>> = vec![Vec::new();lines[0].len()/4];
+    let mut stacklist: Vec<Vec<char>> = vec![Vec::new();1+(lines[0].len()/4)];
 
     for row in lines[1..].into_iter() {
         for (i, item) in row.chars().skip(1).step_by(4).enumerate() {
