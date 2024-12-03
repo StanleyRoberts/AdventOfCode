@@ -1,3 +1,5 @@
+pub mod day1;
+
 use super::day::*;
 
 const LAST_DAY: i32 = 25;
@@ -8,6 +10,7 @@ pub struct MissingDay;
 
 pub fn day_from_i32(day: i32) -> Result<Box<dyn Day>, MissingDay> {
     match day {
+        1 => Ok(Box::new(day1::Day1)),
         _ => Err(MissingDay),
     }
 }
