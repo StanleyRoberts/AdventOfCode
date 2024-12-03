@@ -1,4 +1,5 @@
 pub mod day1;
+pub mod day2;
 
 use super::day::*;
 
@@ -11,6 +12,7 @@ pub struct MissingDay;
 pub fn day_from_i32(day: i32) -> Result<Box<dyn Day>, MissingDay> {
     match day {
         1 => Ok(Box::new(day1::Day1)),
+        2 => Ok(Box::new(day2::Day2)),
         _ => Err(MissingDay),
     }
 }
