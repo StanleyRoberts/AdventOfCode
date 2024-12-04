@@ -1,5 +1,5 @@
 use aoc_2024::{days::day_from_i32, Day};
-use chrono::{Datelike, Utc};
+use chrono::{Datelike, Local};
 use clap::Parser;
 
 /// Runs a given AoC day. Defaults to todays date.
@@ -14,7 +14,7 @@ pub fn get_day() -> Box<dyn Day> {
     let args = Args::parse();
     match args.day {
         Some(x) => day_from_i32(x),
-        None => day_from_i32(Utc::now().day() as i32),
+        None => day_from_i32(Local::now().day() as i32),
     }
     .expect("Could not determine day. Please indicate it using --day [VAL] where 1 <= VAL <= 25")
 }

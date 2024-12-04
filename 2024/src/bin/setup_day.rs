@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use chrono::{Datelike, Utc};
+use chrono::{Datelike, Local};
 use clap::Parser;
 
 const DAY_TEMPLATE: &str = "use super::{impl_day, Part1, Part2};
@@ -82,7 +82,7 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-    let day = args.day.unwrap_or_else(|| Utc::now().day() as i32);
+    let day = args.day.unwrap_or_else(|| Local::now().day() as i32);
 
     let path = format!("src/days/day{day}.rs");
     let file = Path::new(&path);
