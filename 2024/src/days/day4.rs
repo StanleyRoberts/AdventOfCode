@@ -61,6 +61,10 @@ impl Part2 for Day4 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(feature = "nightly")]
+    use crate::day::DayMeta;
+    #[cfg(feature = "nightly")]
+    use test::Bencher;
 
     #[test]
     fn test_part1() {
@@ -98,5 +102,19 @@ MXMXAXMASX"
             ),
             9
         );
+    }
+
+    #[cfg(feature = "nightly")]
+    #[cfg_attr(feature = "nightly", bench)]
+    fn bench_part1(b: &mut Bencher) {
+        let input = Day4.get_input();
+        b.iter(|| Day4.part1(&input));
+    }
+
+    #[cfg(feature = "nightly")]
+    #[cfg_attr(feature = "nightly", bench)]
+    fn bench_part2(b: &mut Bencher) {
+        let input = Day4.get_input();
+        b.iter(|| Day4.part2(&input));
     }
 }

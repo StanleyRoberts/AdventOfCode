@@ -48,6 +48,10 @@ impl Part2 for Day3 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(feature = "nightly")]
+    use crate::day::DayMeta;
+    #[cfg(feature = "nightly")]
+    use test::Bencher;
 
     #[test]
     fn test_part1() {
@@ -63,5 +67,19 @@ mod tests {
             Day3.part2("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"),
             48
         );
+    }
+
+    #[cfg(feature = "nightly")]
+    #[cfg_attr(feature = "nightly", bench)]
+    fn bench_part1(b: &mut Bencher) {
+        let input = Day3.get_input();
+        b.iter(|| Day3.part1(&input));
+    }
+
+    #[cfg(feature = "nightly")]
+    #[cfg_attr(feature = "nightly", bench)]
+    fn bench_part2(b: &mut Bencher) {
+        let input = Day3.get_input();
+        b.iter(|| Day3.part2(&input));
     }
 }
