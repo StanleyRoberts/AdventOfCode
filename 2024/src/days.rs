@@ -4,6 +4,7 @@ pub mod day3;
 pub mod day4;
 pub mod day5;
 pub mod day6;
+pub mod day7;
 
 use super::day::*;
 
@@ -21,6 +22,7 @@ pub fn day_from_i32(day: i32) -> Result<Box<dyn Day>, MissingDay> {
         4 => Ok(Box::new(day4::Day4)),
         5 => Ok(Box::new(day5::Day5)),
         6 => Ok(Box::new(day6::Day6)),
+        7 => Ok(Box::new(day7::Day7)),
         _ => Err(MissingDay),
     }
 }
