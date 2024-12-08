@@ -24,10 +24,8 @@ impl Part1 for Day8 {
             })
             .iter()
             .fold(HashSet::new(), |mut acc, (_ch, vec)| {
-                for i in 0..vec.len() {
-                    for j in i + 1..vec.len() {
-                        let (a, b) = vec[i];
-                        let (x, y) = vec[j];
+                for (i, (a, b)) in vec.iter().enumerate() {
+                    for (x, y) in vec.iter().skip(i + 1) {
                         let diff = (x - a, y - b);
                         acc.insert((a - diff.0, b - diff.1));
                         acc.insert((x + diff.0, y + diff.1));

@@ -1,5 +1,3 @@
-use std::ops;
-
 use super::{impl_day, Part1, Part2};
 
 impl_day!(Day7, 7);
@@ -45,39 +43,6 @@ impl Part1 for Day7 {
     }
 }
 
-struct TernaryIncrementor(pub Vec<u8>);
-
-impl ops::Add<i32> for TernaryIncrementor {
-    type Output = Option<Self>;
-
-    fn add(self, _rhs: i32) -> Self::Output {
-        let mut ctr = (self.0.len() - 1) as i32;
-        let mut new = self.0.clone();
-        while ctr >= 0 {
-            match self.0[ctr as usize] {
-                0 => {
-                    new[ctr as usize] = 1;
-                    return Some(Self(new));
-                }
-                1 => {
-                    new[ctr as usize] = 2;
-                    return Some(Self(new));
-                }
-                2 => {
-                    let mut rev = ctr;
-                    while (rev as usize) < new.len() {
-                        new[rev as usize] = 0;
-                        rev += 1;
-                    }
-                }
-                _ => unreachable!(),
-            }
-            ctr -= 1;
-        }
-        None
-    }
-}
-
 impl Part2 for Day7 {
     fn part2(&self, input: &str) -> usize {
         input
@@ -94,14 +59,13 @@ impl Part2 for Day7 {
                 )
             })
             .filter(|(total, eq)| {
-                let mut orders = Some(TernaryIncrementor(vec![0; eq.len()]));
-                while let Some(check) = orders {
+                for check in 0..(3_i32.pow(eq.len() as u32)) {
                     if *total
                         == eq
                             .iter()
                             .copied()
                             .enumerate()
-                            .reduce(|(_, acc), (i, x)| match check.0[i] {
+                            .reduce(|(_, acc), (i, x)| match check / 3_i32.pow(i as u32) % 3 {
                                 0 => (0, (acc + x)),
                                 1 => (0, (acc * x)),
                                 2 => (0, x + acc * 10_i32.pow(1 + x.ilog10()) as i64),
@@ -112,7 +76,6 @@ impl Part2 for Day7 {
                     {
                         return true;
                     }
-                    orders = check + 1;
                 }
                 false
             })
