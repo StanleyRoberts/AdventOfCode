@@ -36,6 +36,8 @@ mod tests {
     #[cfg(feature = "nightly")]
     use crate::day::DayMeta;
     #[cfg(feature = "nightly")]
+    use std::hint::black_box;
+    #[cfg(feature = "nightly")]
     use test::Bencher;
 
     #[test]
@@ -72,13 +74,13 @@ mod tests {
     #[cfg_attr(feature = "nightly", bench)]
     fn bench_part1(b: &mut Bencher) {
         let input = Day1.get_input();
-        b.iter(|| Day1.part1(&input));
+        b.iter(|| black_box(Day1.part1(&input)));
     }
 
     #[cfg(feature = "nightly")]
     #[cfg_attr(feature = "nightly", bench)]
     fn bench_part2(b: &mut Bencher) {
         let input = Day1.get_input();
-        b.iter(|| Day1.part2(&input));
+        b.iter(|| black_box(Day1.part2(&input)));
     }
 }
