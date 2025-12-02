@@ -8,13 +8,13 @@ const DAY_TEMPLATE: &str = "use super::{impl_day, Part1, Part2};
 impl_day!(Day£, £);
 
 impl Part1 for Day£ {
-    fn part1(&self, input: &str) -> usize {
+    fn part1(&self, input: &str) -> u64 {
         todo!()
     }
 }
 
 impl Part2 for Day£ {
-    fn part2(&self, input: &str) -> usize {
+    fn part2(&self, input: &str) -> u64 {
         todo!()
     }
 }

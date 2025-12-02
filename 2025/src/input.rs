@@ -14,7 +14,7 @@ use reqwest::{
 
 const DATA_DIR: &str = "data/";
 
-pub fn get_puzzle_input(day: usize) -> String {
+pub fn get_puzzle_input(day: u64) -> String {
     let path = Path::new(&(env!("CARGO_MANIFEST_DIR").to_owned()))
         .join(DATA_DIR)
         .join(day.to_string() + ".txt");

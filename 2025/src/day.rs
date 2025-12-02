@@ -1,10 +1,10 @@
 use crate::input::get_puzzle_input;
 
 pub trait Part1 {
-    fn part1(&self, input: &str) -> usize;
+    fn part1(&self, input: &str) -> u64;
 }
 pub trait Part2 {
-    fn part2(&self, input: &str) -> usize;
+    fn part2(&self, input: &str) -> u64;
 }
 
 pub trait Day: Part1 + Part2 + DayMeta {
@@ -27,7 +27,7 @@ pub trait Day: Part1 + Part2 + DayMeta {
 impl<D: Part1 + Part2 + DayMeta> Day for D {}
 
 pub trait DayMeta {
-    fn get_day(&self) -> usize;
+    fn get_day(&self) -> u64;
     fn get_str(&self) -> String {
         format!("Day {}", self.get_day())
     }
@@ -41,7 +41,7 @@ macro_rules! impl_day {
         #[derive(Debug, Default, Clone, Copy)]
         pub(crate) struct $name;
         impl crate::days::DayMeta for $name {
-            fn get_day(&self) -> usize {
+            fn get_day(&self) -> u64 {
                 $val
             }
         }
