@@ -1,4 +1,7 @@
-use std::{env, fs, path::Path};
+use std::{
+    env, fs,
+    path::{Path, PathBuf},
+};
 
 use rustc_version::{Channel, version_meta};
 
@@ -58,9 +61,22 @@ fn make_days_rs() {
                 .replace(".rs", "")
         })
         .collect::<Vec<_>>();
+    let mut parents_to_crate_root = 0;
+    let crate_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let mut current = mod_rs.as_path();
+    while current != crate_root {
+        current = current.parent().unwrap();
+        parents_to_crate_root += 1;
+    }
+    let relative_days_dir = PathBuf::from("../".repeat(parents_to_crate_root - 1))
+        .join("src")
+        .join("days");
     let mod_conts = all_days.iter().fold(String::new(), |acc: String, x| {
         acc + &format!(
-            "pub mod day{x} {{ include!(concat!(env!(\"CARGO_MANIFEST_DIR\"), \"/src/days/day{x}.rs\")); }}\n"
+            "#[path = \"{path}\"]\npub mod day{x};\n",
+            path = relative_days_dir
+                .join(format!("day{x}.rs"))
+                .to_string_lossy() //"pub mod day{x} {{ include!(concat!(env!(\"CARGO_MANIFEST_DIR\"), \"/src/days/day{x}.rs\")); }}\n"
         )
     }) + MODULE_PRE
         + &all_days.iter().fold(String::new(), |acc, x| {
